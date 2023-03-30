@@ -1,6 +1,8 @@
 # HSAFrontEnd
 
 ## Initial steps
-1) Create git project and frontEnd repo
-2) Add README.md
-3) 
+1) Clone repository to local machine
+2) cd into project directory
+3) run `npm install` to install all files and dependencies
+4) run `npm start` so the app is deployed in browser
+  - the app will runs on localhost port 3000 by default
