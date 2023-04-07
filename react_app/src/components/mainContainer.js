@@ -1,7 +1,10 @@
 import MapContainer from "./mapContainer";
 import ResultsContainer from "./resultsContainer";
+import AboutUsModal from './aboutModal';
+import SpringModal from './springModal';
 
-const MainContainer = () => {
+const MainContainer = (props) => {
+  console.log(props);
   return (
     <>
       <div className="flex">
@@ -12,6 +15,8 @@ const MainContainer = () => {
           <ResultsContainer />
         </div>
       </div>
+      <AboutUsModal open={props.modal} />
+      <SpringModal element={props.selectedElement} />
     </>
   )
 }
