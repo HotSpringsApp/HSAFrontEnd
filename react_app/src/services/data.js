@@ -1,7 +1,8 @@
 import axios from "axios";
+const baseUrl = "https://hot-springs-api.herokuapp.com/all"
 
 const getAll = () => {
-  const request = axios.get("https://hot-springs-api.herokuapp.com/all");
+  const request = axios.get(baseUrl);
   return request.then((response) => response.data);
 };
 
@@ -40,4 +41,6 @@ const convertToGeoJSON = (data) => {
   return geoJSON;
 };
 
-export default { getAll, convertToGeoJSON };
+const serviceFunctions = { getAll, convertToGeoJSON }
+
+export default serviceFunctions;
