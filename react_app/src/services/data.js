@@ -15,7 +15,7 @@ const convertToGeoJSON = (data) => {
       type: "Feature",
       geometry: {
         type: "Point",
-        coordinates: [hotspring.longitude, hotspring.latitude],
+        coordinates: [hotspring.long, hotspring.lat],
       },
       properties: {
         _id: hotspring._id,
