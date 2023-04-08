@@ -1,8 +1,13 @@
 import axios from "axios";
 
-const getAll = () => {
-  const request = axios.get("https://hot-springs-api.herokuapp.com/all");
-  return request.then((response) => response.data);
+const getAll = async () => {
+  try {
+    const response = await axios.get("https://hot-springs-api.herokuapp.com/all");
+    const data = await response.data;
+    return data;
+  } catch (e) {
+    console.error("Could not retrieve data from API --->", e);
+  }
 };
 
 const convertToGeoJSON = (data) => {

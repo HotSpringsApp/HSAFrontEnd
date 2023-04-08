@@ -1,10 +1,6 @@
 import React from "react";
 import mapboxgl from "!mapbox-gl"; // eslint-disable-line import/no-webpack-loader-syntax
-import data from "../lib/sample_data.json";
-import data from "../lib/sample_data.json";
-
-mapboxgl.accessToken = process.env.MAPBOX_KEY;
-console.log(process.env.MAPBOX_KEY);
+import dataHelper from "../services/data";
 
 export default class MapContainer extends React.PureComponent {
   constructor(props) {
@@ -32,7 +28,11 @@ export default class MapContainer extends React.PureComponent {
       });
     });
 
-    map.on("load", function () {
+    map.on("load", async () => {
+      const data = await dataHelper.getAll();
+      const geojson = dataHelper.convertToGeoJSON(data);
+      console.log(geojson);
+
       map.addSource("my-data", {
         type: "geojson",
         data: geojson,
