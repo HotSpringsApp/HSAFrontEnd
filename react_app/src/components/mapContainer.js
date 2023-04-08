@@ -1,15 +1,18 @@
 import React from "react";
 import mapboxgl from "!mapbox-gl"; // eslint-disable-line import/no-webpack-loader-syntax
-// mapboxgl.accessToken = process.env.MAPBOX_KEY;
-// console.log(process.env.MAPBOX_KEY);
+import data from "../lib/sample_data.json";
+import data from "../lib/sample_data.json";
+
+mapboxgl.accessToken = process.env.MAPBOX_KEY;
+console.log(process.env.MAPBOX_KEY);
 
 export default class MapContainer extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      lng: -122.4,
-      lat: 37.8,
-      zoom: 8,
+      lng: -7.0284,
+      lat: 40.4861,
+      zoom: 4.52,
     };
   }
 
@@ -26,6 +29,23 @@ export default class MapContainer extends React.PureComponent {
         lng: map.getCenter().lng.toFixed(4),
         lat: map.getCenter().lat.toFixed(4),
         zoom: map.getZoom().toFixed(2),
+      });
+    });
+
+    map.on("load", function () {
+      map.addSource("my-data", {
+        type: "geojson",
+        data: geojson,
+      });
+
+      map.addLayer({
+        id: "my-data-layer",
+        type: "circle",
+        source: "my-data",
+        paint: {
+          "circle-radius": 5,
+          "circle-color": "blue",
+        },
       });
     });
   }
