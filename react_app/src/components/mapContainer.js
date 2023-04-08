@@ -20,14 +20,6 @@ export default class MapContainer extends React.PureComponent {
       zoom: this.state.zoom,
     });
 
-    map.on("move", () => {
-      this.setState({
-        lng: map.getCenter().lng.toFixed(4),
-        lat: map.getCenter().lat.toFixed(4),
-        zoom: map.getZoom().toFixed(2),
-      });
-    });
-
     map.on("load", async () => {
       const data = await dataHelper.getAll();
       const geojson = dataHelper.convertToGeoJSON(data);
@@ -47,6 +39,24 @@ export default class MapContainer extends React.PureComponent {
           "circle-color": "blue",
         },
       });
+    });
+
+    map.on("click", "my-data-layer", (e) => {
+      let coordinates = e.features[0].geometry.coordinates.slice();
+      let properties = e.features[0].properties;
+
+      new mapboxgl.Popup()
+        .setLngLat(coordinates)
+        .setHTML("<h3>" + properties.name + "</h3><p>" + properties.description + "</p>")
+        .addTo(map);
+    });
+
+    map.on("mouseenter", "my-data-layer", () => {
+      map.getCanvas().style.cursor = "pointer";
+    });
+
+    map.on("mouseleave", "my-data-layer", () => {
+      map.getCanvas().style.cursor = "";
     });
   }
 
