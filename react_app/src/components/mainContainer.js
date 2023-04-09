@@ -1,7 +1,19 @@
+import { useState, useEffect } from 'react';
 import MapContainer from "./mapContainer";
 import ResultsContainer from "./resultsContainer";
+import serviceFunctions from '../services/data';
 
 const MainContainer = () => {
+  const [springsData, setSpringData] = useState([]);
+
+  useEffect(() => {
+    serviceFunctions.getAll()
+    .then(springsArr => {
+      console.log(springsArr);        // for testing purpose, remove later 
+      setSpringData(springsArr);
+    });
+  }, []);
+
   return (
     <>
       <div className="flex">
@@ -9,7 +21,7 @@ const MainContainer = () => {
           <MapContainer />
         </div>
         <div className="w-2/5 bg-gray-300 p-6">
-          <ResultsContainer />
+          <ResultsContainer data={springsData}/>
         </div>
       </div>
     </>
