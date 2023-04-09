@@ -1,6 +1,6 @@
-import React from "react";
-import mapboxgl from "!mapbox-gl"; // eslint-disable-line import/no-webpack-loader-syntax
-import dataHelper from "../services/data";
+import React from 'react';
+import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
+import dataHelper from '../services/data';
 
 export default class MapContainer extends React.PureComponent {
   constructor(props) {
@@ -15,48 +15,46 @@ export default class MapContainer extends React.PureComponent {
   componentDidMount() {
     const map = new mapboxgl.Map({
       container: this.mapContainer,
-      style: "mapbox://styles/mapbox/streets-v11",
+      style: 'mapbox://styles/mapbox/streets-v11',
       center: [this.state.lng, this.state.lat],
       zoom: this.state.zoom,
     });
 
-    map.on("load", async () => {
-      const data = await dataHelper.getAll();
-      const geojson = dataHelper.convertToGeoJSON(data);
-      console.log(geojson);
+    map.on('load', async () => {
+      const data = dataHelper.convertToGeoJSON(this.props.data);
 
-      map.addSource("my-data", {
-        type: "geojson",
-        data: geojson,
+      map.addSource('hotsprings-data', {
+        type: 'geojson',
+        data: data,
       });
 
       map.addLayer({
-        id: "my-data-layer",
-        type: "circle",
-        source: "my-data",
+        id: 'hotsprings-data-layer',
+        type: 'circle',
+        source: 'hotsprings-data',
         paint: {
-          "circle-radius": 5,
-          "circle-color": "blue",
+          'circle-radius': 5,
+          'circle-color': 'blue',
         },
       });
     });
 
-    map.on("click", "my-data-layer", (e) => {
+    map.on('click', 'hotsprings-data-layer', (e) => {
       let coordinates = e.features[0].geometry.coordinates.slice();
       let properties = e.features[0].properties;
 
       new mapboxgl.Popup()
         .setLngLat(coordinates)
-        .setHTML("<h3>" + properties.name + "</h3><p>" + properties.description + "</p>")
+        .setHTML('<h3>' + properties.name + '</h3><p>' + properties.description + '</p>')
         .addTo(map);
     });
 
-    map.on("mouseenter", "my-data-layer", () => {
-      map.getCanvas().style.cursor = "pointer";
+    map.on('mouseenter', 'my-data-layer', () => {
+      map.getCanvas().style.cursor = 'pointer';
     });
 
-    map.on("mouseleave", "my-data-layer", () => {
-      map.getCanvas().style.cursor = "";
+    map.on('mouseleave', 'my-data-layer', () => {
+      map.getCanvas().style.cursor = '';
     });
   }
 
