@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.mapContainer {
+  height: 100vh;
+}
+
+/* .mapboxgl-popup-content {
+  background-color: transparent;
+  box-shadow: none;
+} */
+
+.mapboxgl-popup-tip {
+  display: none;
+}
