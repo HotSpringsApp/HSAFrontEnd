@@ -1,6 +1,4 @@
-import { Fragment, useState } from "react";
-import { Button, Dialog, DialogBody, DialogHeader } from "@material-tailwind/react";
-
+import { useState } from "react";
 import SingleSpring from "./singleSpring";
 
 const ResultsContainer = ({ data }) => {
@@ -15,24 +13,13 @@ const ResultsContainer = ({ data }) => {
       <h2 className="text-lg font-bold mb-4 text-center">
         {data.length} results found
       </h2>
-      {data.map(spring => 
-      <div>
+      {data.map(spring =>
         <SingleSpring 
           key={spring._id}
           spring={spring}
+          onClick={handleClick}
+          openModal={displayModal} 
         />
-        <Fragment>
-          <Button onClick={handleClick} variant="gradient">
-            More info
-          </Button>
-          <Dialog open={displayModal} handler={handleClick}>
-            <DialogHeader>{spring.name}</DialogHeader>
-            <DialogBody divider>
-              {spring.description}
-            </DialogBody>
-          </Dialog>
-        </Fragment>
-      </div>
       )}
     </>
   )
