@@ -1,7 +1,7 @@
 import SpringModal from "./springModal";
 
 const SingleSpring = ({ spring, onClick, openModal, selected }) => {
-  console.log(selected)
+  // console.log(selected)
   return (
     <>
       <div onClick={onClick}>
