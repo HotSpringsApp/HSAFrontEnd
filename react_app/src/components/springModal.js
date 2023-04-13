@@ -1,12 +1,21 @@
 import { Fragment } from "react";
 import { Dialog, DialogBody, DialogHeader } from "@material-tailwind/react";
+import { useState } from "react";
 
-const SpringModal = ({ spring, openModal }) => {
-  // console.log(spring);
+const SpringModal = ({ spring, modalState, handler }) => {
+  const [displayModal, setDisplayModal] = useState(modalState);
+
+  const handleClick = () => {
+    setDisplayModal(!displayModal);
+    handler();
+  }
+
   return (
     <Fragment>
-      <Dialog open={openModal}>
-        <DialogHeader>{spring.name}</DialogHeader>
+      <Dialog open={displayModal} handler={handleClick}>
+        <DialogHeader>
+          {spring.name}
+        </DialogHeader>
         <DialogBody>
           {spring.description}
         </DialogBody>

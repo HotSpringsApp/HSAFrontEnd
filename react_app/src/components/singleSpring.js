@@ -1,10 +1,17 @@
+import { useState } from "react";
 import SpringModal from "./springModal";
 
-const SingleSpring = ({ spring, onClick, openModal, selected }) => {
-  // console.log(selected)
+const SingleSpring = ({ spring }) => {  
+  
+  const [displayModal, setDisplayModal] = useState(false);
+
+  const handleClick = () => {
+    setDisplayModal(!displayModal);
+  }
+
   return (
     <>
-      <div onClick={onClick}>
+      <div onClick={handleClick}>
         <div className="lg:flex">
           <img 
             className="object-cover w-full h-56 rounded-lg lg:w-64" 
@@ -19,13 +26,15 @@ const SingleSpring = ({ spring, onClick, openModal, selected }) => {
               {spring.city}
             </span>
             <p className="text-sm font-semibold text-black">
-                {spring.description}
+              {spring.description}
             </p>
           </div>
         </div>
       </div>
-      <div onClick={onClick}>
-        <SpringModal spring={spring} openModal={openModal}/>
+      <div>
+        {displayModal && (
+          <SpringModal spring={spring} modalState={displayModal} handler={handleClick}/>
+        )}
       </div>
     </>
   )
