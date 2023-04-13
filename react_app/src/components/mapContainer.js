@@ -2,6 +2,8 @@ import React from 'react';
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 import dataHelper from '../services/data';
 
+mapboxgl.accessToken = 'pk.eyJ1IjoidG9wbG9ic3RlciIsImEiOiJjbGc1Znl6dDcwMWQ1M2VucWd5cmQ3eDR6In0.PC4Hsoa8vKQ1ty914Aw2WQ';
+
 export default class MapContainer extends React.PureComponent {
   constructor(props) {
     super(props);
