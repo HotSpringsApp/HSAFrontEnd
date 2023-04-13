@@ -65,7 +65,7 @@ const SignInModal = ({ signInModalState, signInModalClosed }) => {
                   TO BE IMPLEMENTED  (so far, current modal closes but sign up doesn't open)
               */}
 
-              {/* <Typography variant="small" className="mt-6 flex justify-center">
+              <Typography variant="small" className="mt-6 flex justify-center">
                 Don&apos;t have an account?
                 <Typography
                   as="a"
@@ -77,7 +77,7 @@ const SignInModal = ({ signInModalState, signInModalClosed }) => {
                 >
                   Sign up
                 </Typography>
-              </Typography> */}
+              </Typography>
             </CardFooter>
           </Card>
         </Dialog>
