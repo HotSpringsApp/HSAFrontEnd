@@ -25,6 +25,10 @@ export default class MapContainer extends React.PureComponent {
 
     map.on('load', async () => {
       const data = dataHelper.convertToGeoJSON(this.props.data);
+      const mapBounds = map.getBounds();
+      const bboxPolygon = turf.bboxPolygon([mapBounds.getWest(), mapBounds.getSouth(), mapBounds.getEast(), mapBounds.getNorth()]);
+      const dataWithinBounds = this.props.data.filter((feature) => turf.booleanPointInPolygon(turf.point([feature.long, feature.lat]), bboxPolygon));
+      this.props.setBoundedData(dataWithinBounds);
 
       map.addSource('hotsprings-data', {
         type: 'geojson',
