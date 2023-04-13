@@ -1,15 +1,28 @@
 import { useState } from "react";
 import SignInModal from "./signInModal";
+import SignUpModal from "./signUpModal";
 
 const LeftMenu = () => {
-  const [modalViewState, setModalViewState] = useState(false);
-
+  // SignIn Btn state and handler
+  const [signInModalOpen, setSignInModalState] = useState(false);
+  
   const handleSignInBtn = () => {
-    setModalViewState(!modalViewState);
+    setSignInModalState(!signInModalOpen);
+  }
+  
+  const signInModalClosed = () => {
+    setSignInModalState(false);
+  };
+
+  // SignUp Btn state and handler
+  const [signUpModalOpen, setSignUpModalState] = useState(false);
+  
+  const handleSignUpBtn = () => {
+    setSignUpModalState(!signUpModalOpen);
   }
 
-  const setModalClosed = () => {
-    setModalViewState(false);
+  const signUpModalClosed = () => {
+    setSignUpModalState(false);
   };
 
   return (
@@ -19,14 +32,22 @@ const LeftMenu = () => {
           <button className="border border-white rounded-md py-1 px-2" onClick={handleSignInBtn}>Sign In</button>
         </div>
         <div className="mr-6">
-          <button className="border border-white rounded-md py-1 px-2">Sign Up</button>
+          <button className="border border-white rounded-md py-1 px-2" onClick={handleSignUpBtn}>Sign Up</button>
         </div>
       </div>
       <div>
-        {modalViewState && (
+        {signInModalOpen && (
           <SignInModal 
-            modalViewState={modalViewState}
-            setModalClosed={setModalClosed}
+            signInModalState={signInModalOpen}
+            signInModalClosed={signInModalClosed}
+          />
+        )}
+      </div>
+      <div>
+        {signUpModalOpen && (
+          <SignUpModal 
+            signUpModalState={signUpModalOpen}
+            signUpModalClosed={signUpModalClosed}
           />
         )}
       </div>
