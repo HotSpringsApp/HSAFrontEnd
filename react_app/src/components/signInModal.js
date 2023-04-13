@@ -49,7 +49,7 @@ const SignInModal = ({ modalViewState, setModalClosed }) => {
           </CardBody>
           <CardFooter className="pt-0">
             <Button variant="gradient" 
-                    // onClick={handleOpen} 
+                    onClick={handleModalClose} 
                     fullWidth>
               Sign In
             </Button>
@@ -61,7 +61,7 @@ const SignInModal = ({ modalViewState, setModalClosed }) => {
                 variant="small"
                 color="blue"
                 className="ml-1 font-bold"
-                // onClick={handleOpen}
+                onClick={handleModalClose}
               >
                 Sign up
               </Typography>
