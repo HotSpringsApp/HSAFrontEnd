@@ -33,7 +33,7 @@ const SingleSpring = ({ spring }) => {
       </div>
       <div>
         {displayModal && (
-          <SpringModal spring={spring} modalState={displayModal}/>
+          <SpringModal spring={spring} modalState={displayModal} handler={handleClick}/>
         )}
       </div>
     </>
