@@ -1,5 +1,5 @@
-import axios from "axios";
-const baseUrl = "https://hot-springs-api.herokuapp.com/all"
+import axios from 'axios';
+const baseUrl = 'https://hot-springs-api.herokuapp.com/all';
 
 const getAll = async () => {
   try {
@@ -7,20 +7,20 @@ const getAll = async () => {
     const data = await response.data;
     return data;
   } catch (e) {
-    console.error("Could not retrieve data from API --->", e);
+    console.error('Could not retrieve data from API --->', e);
   }
 };
 
 const convertToGeoJSON = (data) => {
   const geoJSON = {
-    type: "FeatureCollection",
+    type: 'FeatureCollection',
     features: [],
   };
   data.forEach((hotspring) => {
     const feature = {
-      type: "Feature",
+      type: 'Feature',
       geometry: {
-        type: "Point",
+        type: 'Point',
         coordinates: [hotspring.long, hotspring.lat],
       },
       properties: {
@@ -46,6 +46,6 @@ const convertToGeoJSON = (data) => {
   return geoJSON;
 };
 
-const serviceFunctions = { getAll, convertToGeoJSON }
+const serviceFunctions = { getAll, convertToGeoJSON };
 
 export default serviceFunctions;
