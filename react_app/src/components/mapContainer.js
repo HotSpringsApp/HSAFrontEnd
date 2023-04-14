@@ -68,6 +68,7 @@ export default class MapContainer extends React.PureComponent {
       const bboxPolygon = turf.bboxPolygon([mapBounds.getWest(), mapBounds.getSouth(), mapBounds.getEast(), mapBounds.getNorth()]);
       const dataWithinBounds = this.props.data.filter((feature) => turf.booleanPointInPolygon(turf.point([feature.long, feature.lat]), bboxPolygon));
       this.props.setBoundedData(dataWithinBounds);
+      console.log('dataWithinBounds ---->', dataWithinBounds);
     });
   }
 
