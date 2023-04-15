@@ -3,6 +3,7 @@ import { Dialog, DialogBody, DialogHeader } from "@material-tailwind/react";
 import { useState } from "react";
 
 const SpringModal = ({ spring, modalState, handler }) => {
+  console.log(spring)
   const [displayModal, setDisplayModal] = useState(modalState);
 
   const handleClick = () => {

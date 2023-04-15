@@ -1,6 +1,9 @@
 import SingleSpring from "./singleSpring";
 
 const ResultsContainer = ({ data }) => {
+  data = data.map(data => data.properties);
+  console.log(data);
+  
   return (
     <>
       <h2 className="text-lg font-bold mb-4 text-center">
