@@ -1,6 +1,7 @@
 import React from 'react';
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 import dataHelper from '../services/data';
+import spatialHelper from '../services/spatial';
 import * as turf from '@turf/turf';
 
 export default class MapContainer extends React.PureComponent {
@@ -23,9 +24,7 @@ export default class MapContainer extends React.PureComponent {
 
     map.on('load', async () => {
       const data = dataHelper.convertToGeoJSON(this.props.data);
-      const mapBounds = map.getBounds();
-      const bboxPolygon = turf.bboxPolygon([mapBounds.getWest(), mapBounds.getSouth(), mapBounds.getEast(), mapBounds.getNorth()]);
-      const dataWithinBounds = this.props.data.filter((feature) => turf.booleanPointInPolygon(turf.point([feature.long, feature.lat]), bboxPolygon));
+      const dataWithinBounds = spatialHelper.dataWithinBounds(map, data);
       this.props.setBoundedData(dataWithinBounds);
 
       map.addSource('hotsprings-data', {
@@ -64,11 +63,8 @@ export default class MapContainer extends React.PureComponent {
 
     map.on('moveend', () => {
       const data = dataHelper.convertToGeoJSON(this.props.data);
-      const mapBounds = map.getBounds();
-      const bboxPolygon = turf.bboxPolygon([mapBounds.getWest(), mapBounds.getSouth(), mapBounds.getEast(), mapBounds.getNorth()]);
-      const dataWithinBounds = this.props.data.filter((feature) => turf.booleanPointInPolygon(turf.point([feature.long, feature.lat]), bboxPolygon));
+      const dataWithinBounds = spatialHelper.dataWithinBounds(map, data);
       this.props.setBoundedData(dataWithinBounds);
-      console.log('dataWithinBounds ---->', dataWithinBounds);
     });
   }
 

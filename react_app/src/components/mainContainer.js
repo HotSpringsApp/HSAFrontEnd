@@ -9,7 +9,6 @@ const MainContainer = () => {
 
   useEffect(() => {
     serviceFunctions.getAll().then((springsArr) => {
-      console.log(springsArr); // for testing purpose, remove later
       setSpringData(springsArr);
     });
   }, []);
