@@ -1,6 +1,8 @@
 import React from 'react';
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 import dataHelper from '../services/data';
+import spatialHelper from '../services/spatial';
+import * as turf from '@turf/turf';
 
 export default class MapContainer extends React.PureComponent {
   constructor(props) {
@@ -22,6 +24,8 @@ export default class MapContainer extends React.PureComponent {
 
     map.on('load', async () => {
       const data = dataHelper.convertToGeoJSON(this.props.data);
+      const dataWithinBounds = spatialHelper.dataWithinBounds(map, data);
+      this.props.setBoundedData(dataWithinBounds);
 
       map.addSource('hotsprings-data', {
         type: 'geojson',
@@ -55,6 +59,12 @@ export default class MapContainer extends React.PureComponent {
 
     map.on('mouseleave', 'my-data-layer', () => {
       map.getCanvas().style.cursor = '';
+    });
+
+    map.on('moveend', () => {
+      const data = dataHelper.convertToGeoJSON(this.props.data);
+      const dataWithinBounds = spatialHelper.dataWithinBounds(map, data);
+      this.props.setBoundedData(dataWithinBounds);
     });
   }
 
