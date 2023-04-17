@@ -1,22 +1,16 @@
-import SingleSpring from "./singleSpring";
+import SingleSpring from './singleSpring';
 
 const ResultsContainer = ({ data }) => {
-  data = data.map(data => data.properties);
-  console.log(data);
-  
+  data = data.map((data) => data.properties);
+
   return (
     <>
-      <h2 className="text-lg font-bold mb-4 text-center">
-        {data.length} results found
-      </h2>
-      {data.map(spring =>
-        <SingleSpring
-          key={spring._id}
-          spring={spring}
-        />
-      )}
+      <h2 className="text-lg font-bold mb-4 text-center">{data.length} results found</h2>
+      {data.map((spring) => (
+        <SingleSpring key={spring._id} spring={spring} />
+      ))}
     </>
-  )
-}
+  );
+};
 
 export default ResultsContainer;

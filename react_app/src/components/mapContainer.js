@@ -24,7 +24,6 @@ export default class MapContainer extends React.PureComponent {
 
     map.on('load', async () => {
       const data = this.props.data;
-      console.log('data', data);
       const dataWithinBounds = spatialHelper.dataWithinBounds(map, data);
       this.props.setBoundedData(dataWithinBounds);
 
@@ -67,7 +66,6 @@ export default class MapContainer extends React.PureComponent {
 
     map.on('moveend', () => {
       const data = this.props.data;
-      console.log('in moveend', data);
       const dataWithinBounds = spatialHelper.dataWithinBounds(map, data);
       this.props.setBoundedData(dataWithinBounds);
     });
