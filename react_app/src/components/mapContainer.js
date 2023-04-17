@@ -23,13 +23,17 @@ export default class MapContainer extends React.PureComponent {
     });
 
     map.on('load', async () => {
-      const data = dataHelper.convertToGeoJSON(this.props.data);
+      const data = this.props.data;
+      console.log('data', data);
       const dataWithinBounds = spatialHelper.dataWithinBounds(map, data);
       this.props.setBoundedData(dataWithinBounds);
 
       map.addSource('hotsprings-data', {
         type: 'geojson',
-        data: data,
+        data: {
+          type: 'FeatureCollection',
+          features: data,
+        },
       });
 
       map.addLayer({
@@ -62,7 +66,8 @@ export default class MapContainer extends React.PureComponent {
     });
 
     map.on('moveend', () => {
-      const data = dataHelper.convertToGeoJSON(this.props.data);
+      const data = this.props.data;
+      console.log('in moveend', data);
       const dataWithinBounds = spatialHelper.dataWithinBounds(map, data);
       this.props.setBoundedData(dataWithinBounds);
     });

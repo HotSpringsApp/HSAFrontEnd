@@ -11,6 +11,6 @@ const getAll = async () => {
   }
 };
 
-const serviceFunctions = getAll;
+const serviceFunctions = { getAll };
 
 export default serviceFunctions;
