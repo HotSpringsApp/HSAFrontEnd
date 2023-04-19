@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import {
   Button,
@@ -12,13 +13,16 @@ import {
   Input,
 } from "@material-tailwind/react";
  
-const SignInModal = ({ signInModalState, signInModalClosed }) => {
-  // SignIn modal state and closing handler
-  const [signInModalOpen, setSignInModalState] = useState(signInModalState);
+const LogInModal = ({ logInModalState, logInModalClosed }) => {
+  const navigate = useNavigate();
 
-  const handleSignInModalClose = () => {
-    setSignInModalState(!signInModalOpen);
-    signInModalClosed();
+  // SignIn modal state and closing handler
+  const [logInModalOpen, setLogInModalState] = useState(logInModalState);
+
+  const handleLogInModalClose = () => {
+    setLogInModalState(!logInModalOpen);
+    logInModalClosed();
+    navigate('/');
   };
 
   return (
@@ -27,8 +31,8 @@ const SignInModal = ({ signInModalState, signInModalClosed }) => {
       <React.Fragment>
         <Dialog
           size="xs"
-          open={signInModalOpen}
-          handler={handleSignInModalClose}
+          open={logInModalOpen}
+          handler={handleLogInModalClose}
           className="bg-transparent shadow-none"
         >
           <Card className="mx-auto w-full max-w-[24rem]">
@@ -38,18 +42,22 @@ const SignInModal = ({ signInModalState, signInModalClosed }) => {
               className="mb-4 grid h-28 place-items-center"
             >
               <Typography variant="h3" color="white">
-                Sign In
+                Log In
               </Typography>
             </CardHeader>
             <CardBody className="flex flex-col gap-4">
               <Input label="Email" size="lg" />
               <Input label="Password" size="lg" />
+              {/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MAKE THE FOLLOWING tag 'hidden' and display only when error occur */}
+              <div className="text-center text-red-500 border border-red-500 rounded-lg p-2">
+                invalid email or password msg here (TBD)
+              </div>
             </CardBody>
             <CardFooter className="pt-0">
               <Button variant="gradient" 
-                      // onClick={handleSignInModalClose}     // ~~~~~~~~~TBD~~~~~~~~~ //
+                      // onClick={handleLogInModalClose}     // ~~~~~~~~~TBD~~~~~~~~~ //
                       fullWidth>
-                Sign In
+                Log In
               </Button>
             </CardFooter>
           </Card>
@@ -59,4 +67,4 @@ const SignInModal = ({ signInModalState, signInModalClosed }) => {
   );
 }
 
-export default SignInModal;
+export default LogInModal;

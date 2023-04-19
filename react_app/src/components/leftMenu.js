@@ -1,53 +1,58 @@
 import { useState } from "react";
-import SignInModal from "./signInModal";
-import SignUpModal from "./signUpModal";
+import { useNavigate } from "react-router-dom";
+import LogInModal from "./logInModal";
+import RegisterModal from "./registerModal";
 
 const LeftMenu = () => {
-  // SignIn Btn state and handler
-  const [signInModalOpen, setSignInModalState] = useState(false);
+  const navigate = useNavigate();
+
+  // LogIn Btn state and handler
+  const [logInModalOpen, setLogInModalState] = useState(false);
   
-  const handleSignInBtn = () => {
-    setSignInModalState(!signInModalOpen);
+  const handleLogInBtn = () => {
+    navigate('/login');
+    setLogInModalState(!logInModalOpen);
   }
   
-  const signInModalClosed = () => {
-    setSignInModalState(false);
+  const logInModalClosed = () => {
+    setLogInModalState(false);
   };
 
-  // SignUp Btn state and handler
-  const [signUpModalOpen, setSignUpModalState] = useState(false);
+  // Register Btn state and handler
+  const [registerModalOpen, setRegisterModalState] = useState(false);
   
-  const handleSignUpBtn = () => {
-    setSignUpModalState(!signUpModalOpen);
+  const handleRegisterBtn = () => {
+    navigate('/register');
+    setRegisterModalState(!registerModalOpen);
   }
 
-  const signUpModalClosed = () => {
-    setSignUpModalState(false);
+  const registerModalClosed = () => {
+    setRegisterModalState(false);
   };
 
   return (
     <>
       <div className="flex">
         <div className="mr-6">
-          <button className="border border-white rounded-md py-1 px-2" onClick={handleSignInBtn}>Sign In</button>
+          <button className="border border-white rounded-md py-1 px-2" onClick={handleLogInBtn}>Log In</button>
         </div>
         <div className="mr-6">
-          <button className="border border-white rounded-md py-1 px-2" onClick={handleSignUpBtn}>Sign Up</button>
+          <button className="border border-white rounded-md py-1 px-2" onClick={handleRegisterBtn}>Register</button>
         </div>
       </div>
       <div>
-        {signInModalOpen && (
-          <SignInModal 
-            signInModalState={signInModalOpen}
-            signInModalClosed={signInModalClosed}
+        {logInModalOpen && (
+          <LogInModal 
+            logInModalState={logInModalOpen}
+            logInModalClosed={logInModalClosed}
           />
         )}
       </div>
       <div>
-        {signUpModalOpen && (
-          <SignUpModal 
-            signUpModalState={signUpModalOpen}
-            signUpModalClosed={signUpModalClosed}
+        {registerModalOpen && (
+          <RegisterModal 
+            registerModalState={registerModalOpen}
+            registerModalClosed={registerModalClosed}
           />
         )}
       </div>
