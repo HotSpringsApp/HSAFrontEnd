@@ -36,26 +36,28 @@ const LogInModal = ({ logInModalState, logInModalClosed }) => {
   const submit = async (event) => {
     try {
       const loginUser = { email, password };
+
       // making request to our backend to login the user in
       const loginRes = await axios.post(
         "http://localhost:3001/users/login",
         loginUser
       );
-      console.log(loginRes);
+
       // setting login response data's token and user data
       setUserData({
         token: loginRes.data.token,
         user: loginRes.data.user,
       });
       localStorage.setItem("auth-token", loginRes.data.token);
+
     } catch (err) {
-      err.response.data.msg && console.log(err.response.data.msg) && setError('Invalid credentials');
+      err.response.data.msg && setError(err.response.data.msg);
+      console.log(err.response.data.msg);
     }
   };
 
   return (
     <>
-    
       <React.Fragment>
         <Dialog
           size="xs"

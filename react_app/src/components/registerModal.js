@@ -38,22 +38,27 @@ const RegisterModal = ({ registerModalState, registerModalClosed }) => {
 
   const submit = async (event) => {
     try {
-      const newUser = { firstName, lastName, email, password, passwordCheck }; // creating our new user
+       // creating the new user
+      const newUser = { firstName, lastName, email, password, passwordCheck };
+      // posting new user to backend
+      await axios.post("http://localhost:3001/users/register", newUser);
 
-      await axios.post("http://localhost:3001/users/register", newUser); // posting new user to backend
       // making request to our backend to login the user in
       const loginRes = await axios.post("http://localhost:3001/users/login", {
         email,
         password,
       });
-      // setting login response data's token and user data this
+
+      // setting login response data's token and user data
       setUserData({
         token: loginRes.data.token,
         user: loginRes.data.user,
       });
       localStorage.setItem("auth-token", loginRes.data.token);
+
     } catch (err) {
-      err.response.data.msg && console.log(err.response.data.msg) && setError('Invalid credentials');
+      err.response.data.msg && setError(err.response.data.msg);
+      console.log(err.response.data.msg);
     }
   };
 
