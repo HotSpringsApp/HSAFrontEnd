@@ -40,9 +40,9 @@ const RegisterModal = ({ registerModalState, registerModalClosed }) => {
     try {
       const newUser = { firstName, lastName, email, password, passwordCheck }; // creating our new user
 
-      await axios.post("http://localhost:3001/register", newUser); // posting new user to backend
+      await axios.post("http://localhost:3001/users/register", newUser); // posting new user to backend
       // making request to our backend to login the user in
-      const loginRes = await axios.post("http://localhost:3001/login", {
+      const loginRes = await axios.post("http://localhost:3001/users/login", {
         email,
         password,
       });

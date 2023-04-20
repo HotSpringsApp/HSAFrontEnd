@@ -38,7 +38,7 @@ const LogInModal = ({ logInModalState, logInModalClosed }) => {
       const loginUser = { email, password };
       // making request to our backend to login the user in
       const loginRes = await axios.post(
-        "http://localhost:3001/login",
+        "http://localhost:3001/users/login",
         loginUser
       );
       console.log(loginRes);
