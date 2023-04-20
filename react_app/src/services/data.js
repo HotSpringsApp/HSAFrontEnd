@@ -1,5 +1,5 @@
 import axios from 'axios';
-const baseUrl = 'https://hot-springs-api.herokuapp.com/all';
+const baseUrl = 'https://hot-springs-api.herokuapp.com/hotsprings';
 
 const getAll = async () => {
   try {
