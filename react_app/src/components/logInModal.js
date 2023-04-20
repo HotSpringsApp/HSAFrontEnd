@@ -1,6 +1,8 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import UserContext from "../context/UserContext";
 
 import {
   Button,
@@ -16,13 +18,39 @@ import {
 const LogInModal = ({ logInModalState, logInModalClosed }) => {
   const navigate = useNavigate();
 
-  // SignIn modal state and closing handler
+  // logIn modal state and closing handler
   const [logInModalOpen, setLogInModalState] = useState(logInModalState);
 
   const handleLogInModalClose = () => {
     setLogInModalState(!logInModalOpen);
     logInModalClosed();
     navigate('/');
+  };
+
+  // logIn logic
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [error, setError] = useState();
+  const setUserData = useContext(UserContext);
+
+  const submit = async (event) => {
+    try {
+      const loginUser = { email, password };
+      // making request to our backend to login the user in
+      const loginRes = await axios.post(
+        "http://localhost:3001/login",
+        loginUser
+      );
+      console.log(loginRes);
+      // setting login response data's token and user data
+      setUserData({
+        token: loginRes.data.token,
+        user: loginRes.data.user,
+      });
+      localStorage.setItem("auth-token", loginRes.data.token);
+    } catch (err) {
+      err.response.data.msg && console.log(err.response.data.msg) && setError('Invalid credentials');
+    }
   };
 
   return (
@@ -46,16 +74,19 @@ const LogInModal = ({ logInModalState, logInModalClosed }) => {
               </Typography>
             </CardHeader>
             <CardBody className="flex flex-col gap-4">
-              <Input label="Email" size="lg" />
-              <Input label="Password" size="lg" />
-              {/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MAKE THE FOLLOWING tag 'hidden' and display only when error occur */}
-              <div className="text-center text-red-500 border border-red-500 rounded-lg p-2">
-                invalid email or password msg here (TBD)
+              <Input label="Email" size="lg" onChange={(event) => setEmail(event.target.value)}/>
+              <Input label="Password" size="lg" onChange={(event) => setPassword(event.target.value)}/>
+              <div>
+                {error && (
+                  <div className="text-center text-red-500 border border-red-500 rounded-lg p-2">
+                    {error}
+                  </div>
+                )}
               </div>
             </CardBody>
             <CardFooter className="pt-0">
               <Button variant="gradient" 
-                      // onClick={handleLogInModalClose}     // ~~~~~~~~~TBD~~~~~~~~~ //
+                      onClick={submit}
                       fullWidth>
                 Log In
               </Button>
