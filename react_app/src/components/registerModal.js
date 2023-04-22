@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import UserContext from "../context/UserContext";
 
@@ -15,16 +15,16 @@ import {
   Input,
 } from "@material-tailwind/react";
  
-const RegisterModal = ({ registerModalState, registerModalClosed }) => {
-  const navigate = useNavigate();
+const RegisterModal = ({ registerModalState, registerModalClosed, onSuccess }) => {
+  // const navigate = useNavigate();
 
   // register modal state and closing handler
   const [registerModalOpen, setRegisterModalState] = useState(registerModalState);
 
-  const handleSignUpModalClose = () => {
+  const handleRegisterModalClose = () => {
     setRegisterModalState(!registerModalOpen);
     registerModalClosed();
-    navigate('/');
+    // navigate('/');
   };
 
   // register logic
@@ -34,30 +34,45 @@ const RegisterModal = ({ registerModalState, registerModalClosed }) => {
   const [password, setPassword] = useState();
   const [passwordCheck, setPasswordCheck] = useState();
   const [error, setError] = useState();
-  const setUserData = useContext(UserContext);
+
+  const [userData, setUserData] = useState();
+
+  // reset UI after successfully login
+  const setUserLogInUI = () => {
+    onSuccess();
+    registerModalClosed();
+  }
 
   const submit = async (event) => {
     try {
-       // creating the new user
+       // creating the new user with data entered in form
       const newUser = { firstName, lastName, email, password, passwordCheck };
+
       // posting new user to backend
       await axios.post("http://localhost:3001/users/register", newUser);
 
-      // making request to our backend to login the user in
+      // making request to backend to login the user in
       const loginRes = await axios.post("http://localhost:3001/users/login", {
         email,
         password,
       });
+      // console.log(loginRes);
 
-      // setting login response data's token and user data
+      // updating the context variable by setting login response data's token and user data
       setUserData({
         token: loginRes.data.token,
         user: loginRes.data.user,
       });
+
+      // storing token in the browser's local storage after user successfully logs in
+      // can be retrieved later and use it to authenticate subsequent requests to the server
       localStorage.setItem("auth-token", loginRes.data.token);
 
+      // closes modal and displays log out btn 
+      setUserLogInUI();
+      
     } catch (err) {
-      err.response.data.msg && setError(err.response.data.msg);
+      setError(err.response.data.msg);
       console.log(err.response.data.msg);
     }
   };
@@ -68,7 +83,7 @@ const RegisterModal = ({ registerModalState, registerModalClosed }) => {
         <Dialog
           size="xs"
           open={registerModalOpen}
-          handler={handleSignUpModalClose}
+          handler={handleRegisterModalClose}
           className="bg-transparent shadow-none"
         >
           <Card className="mx-auto w-full max-w-[24rem]">
@@ -85,8 +100,8 @@ const RegisterModal = ({ registerModalState, registerModalClosed }) => {
               <Input label="First name" size="lg" onChange={(event) => setFirstName(event.target.value)}/>
               <Input label="Last name" size="lg" onChange={(event) => setLastName(event.target.value)}/>
               <Input label="Email" size="lg" onChange={(event) => setEmail(event.target.value)}/>
-              <Input label="Password" size="lg" onChange={(event) => setPassword(event.target.value)}/>
-              <Input label="Repeat password" size="lg" onChange={(event) => setPasswordCheck(event.target.value)}/>
+              <Input label="Password" type="password" size="lg" onChange={(event) => setPassword(event.target.value)}/>
+              <Input label="Repeat password" type="password" size="lg" onChange={(event) => setPasswordCheck(event.target.value)}/>
               <div>
                 {error && (
                   <div className="text-center text-red-500 border border-red-500 rounded-lg p-2">

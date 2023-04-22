@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import UserContext from "../context/UserContext";
 
@@ -15,8 +15,8 @@ import {
   Input,
 } from "@material-tailwind/react";
  
-const LogInModal = ({ logInModalState, logInModalClosed }) => {
-  const navigate = useNavigate();
+const LogInModal = ({ logInModalState, logInModalClosed, onSuccess }) => {
+  // const navigate = useNavigate();
 
   // logIn modal state and closing handler
   const [logInModalOpen, setLogInModalState] = useState(logInModalState);
@@ -24,14 +24,22 @@ const LogInModal = ({ logInModalState, logInModalClosed }) => {
   const handleLogInModalClose = () => {
     setLogInModalState(!logInModalOpen);
     logInModalClosed();
-    navigate('/');
+    // navigate('/');
   };
 
   // logIn logic
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [error, setError] = useState();
-  const setUserData = useContext(UserContext);
+
+  // const setUserData = useContext(UserContext);
+  const [userData, setUserData] = useState();
+
+  // reset UI after successfully login
+  const setUserLogInUI = () => {
+    onSuccess();
+    logInModalClosed();
+  }
 
   const submit = async (event) => {
     try {
@@ -49,6 +57,10 @@ const LogInModal = ({ logInModalState, logInModalClosed }) => {
         user: loginRes.data.user,
       });
       localStorage.setItem("auth-token", loginRes.data.token);
+      // console.log(setUserData);
+
+      // closes modal and displays log out btn 
+      setUserLogInUI();
 
     } catch (err) {
       err.response.data.msg && setError(err.response.data.msg);
@@ -77,7 +89,7 @@ const LogInModal = ({ logInModalState, logInModalClosed }) => {
             </CardHeader>
             <CardBody className="flex flex-col gap-4">
               <Input label="Email" size="lg" onChange={(event) => setEmail(event.target.value)}/>
-              <Input label="Password" size="lg" onChange={(event) => setPassword(event.target.value)}/>
+              <Input label="Password" type="password" size="lg" onChange={(event) => setPassword(event.target.value)}/>
               <div>
                 {error && (
                   <div className="text-center text-red-500 border border-red-500 rounded-lg p-2">

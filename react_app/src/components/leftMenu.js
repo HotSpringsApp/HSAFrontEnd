@@ -1,16 +1,18 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useContext } from "react";
+// import { useNavigate } from "react-router-dom";
+
 import LogInModal from "./logInModal";
 import RegisterModal from "./registerModal";
+import UserContext from "../context/UserContext";
 
 const LeftMenu = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // LogIn Btn state and handler
   const [logInModalOpen, setLogInModalState] = useState(false);
   
   const handleLogInBtn = () => {
-    navigate('/login');
+    // navigate('/login');
     setLogInModalState(!logInModalOpen);
   }
   
@@ -22,7 +24,7 @@ const LeftMenu = () => {
   const [registerModalOpen, setRegisterModalState] = useState(false);
   
   const handleRegisterBtn = () => {
-    navigate('/register');
+    // navigate('/register');
     setRegisterModalState(!registerModalOpen);
   }
 
@@ -30,21 +32,56 @@ const LeftMenu = () => {
     setRegisterModalState(false);
   };
 
+  // User logged in changes the content of menu
+  const [showLogout, setShowLogout] = useState(false);
+
+  // Log out logic (upon logout setting token and user to undefined and localStorage back to empty string)
+  const [ userData, setUserData ] = useState() || {};
+
+  const logout = () => {
+    setUserData({
+      token: undefined,
+      user: undefined,
+    });
+    localStorage.setItem("auth-token", "");
+    setShowLogout(false);
+  };
+
   return (
     <>
       <div className="flex">
-        <div className="mr-6">
-          <button className="border border-white rounded-md py-1 px-2" onClick={handleLogInBtn}>Log In</button>
-        </div>
-        <div className="mr-6">
-          <button className="border border-white rounded-md py-1 px-2" onClick={handleRegisterBtn}>Register</button>
-        </div>
+        {showLogout ? (
+          <div className="flex justify-center items-center">
+            <div className="mr-6">
+              You are now logged in
+            </div>  
+            <div className="mr-6">
+              <button className="border border-white rounded-md py-1 px-2" onClick={logout}>Log Out</button>
+            </div>
+          </div>
+        ) : (
+          <>
+            <div className="mr-6">
+              <button className="border border-white rounded-md py-1 px-2" 
+                      onClick={handleLogInBtn}>
+                        Log In
+              </button>
+            </div>
+            <div className="mr-6">
+              <button className="border border-white rounded-md py-1 px-2"
+                      onClick={handleRegisterBtn}>  
+                        Register
+              </button>
+            </div>
+          </>
+        )}
       </div>
       <div>
         {logInModalOpen && (
           <LogInModal 
             logInModalState={logInModalOpen}
             logInModalClosed={logInModalClosed}
+            onSuccess={() => setShowLogout(true)}
           />
         )}
       </div>
@@ -53,6 +90,7 @@ const LeftMenu = () => {
           <RegisterModal 
             registerModalState={registerModalOpen}
             registerModalClosed={registerModalClosed}
+            onSuccess={() => setShowLogout(true)}
           />
         )}
       </div>
