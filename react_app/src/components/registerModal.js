@@ -1,8 +1,11 @@
 import React from "react";
-import { useState, useContext } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import axios from "axios";
-import UserContext from "../context/UserContext";
+
+// useContext hook
+// import { useContext } from "react";
+// import { useNavigate } from "react-router-dom";
+// import UserContext from "../context/UserContext";
 
 import {
   Button,
@@ -39,7 +42,7 @@ const RegisterModal = ({ registerModalState, registerModalClosed, onSuccess }) =
 
   // reset UI after successfully login
   const setUserLogInUI = () => {
-    onSuccess();
+    onSuccess(firstName);
     registerModalClosed();
   }
 
@@ -56,19 +59,19 @@ const RegisterModal = ({ registerModalState, registerModalClosed, onSuccess }) =
         email,
         password,
       });
-      // console.log(loginRes);
 
       // updating the context variable by setting login response data's token and user data
       setUserData({
         token: loginRes.data.token,
         user: loginRes.data.user,
       });
+      // console.log(userData);   // undefined... -> setUserData isn't doing what I expect, update userData
 
       // storing token in the browser's local storage after user successfully logs in
       // can be retrieved later and use it to authenticate subsequent requests to the server
       localStorage.setItem("auth-token", loginRes.data.token);
 
-      // closes modal and displays log out btn 
+      // closes modal and displays log out btn and user name
       setUserLogInUI();
       
     } catch (err) {

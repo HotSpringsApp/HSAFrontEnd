@@ -1,9 +1,11 @@
-import { useState, useContext } from "react";
-// import { useNavigate } from "react-router-dom";
-
+import { useState } from "react";
 import LogInModal from "./logInModal";
 import RegisterModal from "./registerModal";
-import UserContext from "../context/UserContext";
+
+// useContext hook
+// import { useContext } from "react";
+// import { useNavigate } from "react-router-dom";
+// import UserContext from "../context/UserContext";
 
 const LeftMenu = () => {
   // const navigate = useNavigate();
@@ -34,6 +36,7 @@ const LeftMenu = () => {
 
   // User logged in changes the content of menu
   const [showLogout, setShowLogout] = useState(false);
+  const [loggedInUser, setLoggedInUser] = useState('');
 
   // Log out logic (upon logout setting token and user to undefined and localStorage back to empty string)
   const [ userData, setUserData ] = useState() || {};
@@ -53,7 +56,7 @@ const LeftMenu = () => {
         {showLogout ? (
           <div className="flex justify-center items-center">
             <div className="mr-6">
-              You are now logged in
+              You are now logged in as {loggedInUser}
             </div>  
             <div className="mr-6">
               <button className="border border-white rounded-md py-1 px-2" onClick={logout}>Log Out</button>
@@ -81,7 +84,7 @@ const LeftMenu = () => {
           <LogInModal 
             logInModalState={logInModalOpen}
             logInModalClosed={logInModalClosed}
-            onSuccess={() => setShowLogout(true)}
+            onSuccess={(name) => { setLoggedInUser(name); setShowLogout(true); }}
           />
         )}
       </div>
@@ -90,7 +93,7 @@ const LeftMenu = () => {
           <RegisterModal 
             registerModalState={registerModalOpen}
             registerModalClosed={registerModalClosed}
-            onSuccess={() => setShowLogout(true)}
+            onSuccess={(name) => { setLoggedInUser(name); setShowLogout(true); }}
           />
         )}
       </div>

@@ -1,8 +1,11 @@
 import React from "react";
-import { useState, useContext } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import axios from "axios";
-import UserContext from "../context/UserContext";
+
+// useContext hook
+// import { useContext } from "react";
+// import { useNavigate } from "react-router-dom";
+// import UserContext from "../context/UserContext";
 
 import {
   Button,
@@ -36,8 +39,8 @@ const LogInModal = ({ logInModalState, logInModalClosed, onSuccess }) => {
   const [userData, setUserData] = useState();
 
   // reset UI after successfully login
-  const setUserLogInUI = () => {
-    onSuccess();
+  const setUserLogInUI = (loggedInUser) => {
+    onSuccess(loggedInUser);
     logInModalClosed();
   }
 
@@ -57,10 +60,10 @@ const LogInModal = ({ logInModalState, logInModalClosed, onSuccess }) => {
         user: loginRes.data.user,
       });
       localStorage.setItem("auth-token", loginRes.data.token);
-      // console.log(setUserData);
-
-      // closes modal and displays log out btn 
-      setUserLogInUI();
+      // console.log(userData);   // undefined... ?
+      
+      // closes modal and displays log out btn and user name
+      setUserLogInUI(loginRes.data.user.firstName);
 
     } catch (err) {
       err.response.data.msg && setError(err.response.data.msg);
