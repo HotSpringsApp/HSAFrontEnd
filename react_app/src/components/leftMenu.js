@@ -1,53 +1,99 @@
 import { useState } from "react";
-import SignInModal from "./signInModal";
-import SignUpModal from "./signUpModal";
+import LogInModal from "./logInModal";
+import RegisterModal from "./registerModal";
+
+// useContext hook
+// import { useContext } from "react";
+// import { useNavigate } from "react-router-dom";
+// import UserContext from "../context/UserContext";
 
 const LeftMenu = () => {
-  // SignIn Btn state and handler
-  const [signInModalOpen, setSignInModalState] = useState(false);
+  // const navigate = useNavigate();
+
+  // LogIn Btn state and handler
+  const [logInModalOpen, setLogInModalState] = useState(false);
   
-  const handleSignInBtn = () => {
-    setSignInModalState(!signInModalOpen);
+  const handleLogInBtn = () => {
+    // navigate('/login');
+    setLogInModalState(!logInModalOpen);
   }
   
-  const signInModalClosed = () => {
-    setSignInModalState(false);
+  const logInModalClosed = () => {
+    setLogInModalState(false);
   };
 
-  // SignUp Btn state and handler
-  const [signUpModalOpen, setSignUpModalState] = useState(false);
+  // Register Btn state and handler
+  const [registerModalOpen, setRegisterModalState] = useState(false);
   
-  const handleSignUpBtn = () => {
-    setSignUpModalState(!signUpModalOpen);
+  const handleRegisterBtn = () => {
+    // navigate('/register');
+    setRegisterModalState(!registerModalOpen);
   }
 
-  const signUpModalClosed = () => {
-    setSignUpModalState(false);
+  const registerModalClosed = () => {
+    setRegisterModalState(false);
+  };
+
+  // User logged in changes the content of menu
+  const [showLogout, setShowLogout] = useState(false);
+  const [loggedInUser, setLoggedInUser] = useState('');
+
+  // Log out logic (upon logout setting token and user to undefined and localStorage back to empty string)
+  const [ userData, setUserData ] = useState() || {};
+
+  const logout = () => {
+    setUserData({
+      token: undefined,
+      user: undefined,
+    });
+    localStorage.setItem("auth-token", "");
+    setShowLogout(false);
   };
 
   return (
     <>
       <div className="flex">
-        <div className="mr-6">
-          <button className="border border-white rounded-md py-1 px-2" onClick={handleSignInBtn}>Sign In</button>
-        </div>
-        <div className="mr-6">
-          <button className="border border-white rounded-md py-1 px-2" onClick={handleSignUpBtn}>Sign Up</button>
-        </div>
+        {showLogout ? (
+          <div className="flex justify-center items-center">
+            <div className="mr-6">
+              You are now logged in as {loggedInUser}
+            </div>  
+            <div className="mr-6">
+              <button className="border border-white rounded-md py-1 px-2" onClick={logout}>Log Out</button>
+            </div>
+          </div>
+        ) : (
+          <>
+            <div className="mr-6">
+              <button className="border border-white rounded-md py-1 px-2" 
+                      onClick={handleLogInBtn}>
+                        Log In
+              </button>
+            </div>
+            <div className="mr-6">
+              <button className="border border-white rounded-md py-1 px-2"
+                      onClick={handleRegisterBtn}>  
+                        Register
+              </button>
+            </div>
+          </>
+        )}
       </div>
       <div>
-        {signInModalOpen && (
-          <SignInModal 
-            signInModalState={signInModalOpen}
-            signInModalClosed={signInModalClosed}
+        {logInModalOpen && (
+          <LogInModal 
+            logInModalState={logInModalOpen}
+            logInModalClosed={logInModalClosed}
+            onSuccess={(name) => { setLoggedInUser(name); setShowLogout(true); }}
           />
         )}
       </div>
       <div>
-        {signUpModalOpen && (
-          <SignUpModal 
-            signUpModalState={signUpModalOpen}
-            signUpModalClosed={signUpModalClosed}
+        {registerModalOpen && (
+          <RegisterModal 
+            registerModalState={registerModalOpen}
+            registerModalClosed={registerModalClosed}
+            onSuccess={(name) => { setLoggedInUser(name); setShowLogout(true); }}
           />
         )}
       </div>
